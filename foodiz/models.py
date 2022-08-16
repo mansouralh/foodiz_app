@@ -56,7 +56,7 @@ class Recipe(models.Model):
     notes= models.TextField(null=True, blank=True)
     pic = models.ImageField(null=True, blank=True)
     def __str__(self):
-        return self.title
+        return f"{self.title} for {self.serves} people"
     
     
 # ------------------------------------------------------------------------------

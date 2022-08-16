@@ -23,5 +23,5 @@ urlpatterns = [
     path("Recipes/", get_recipe_list,name="recipe_list"),
     path("create_recipe/", create_recipe,name="recipe_form"),
     path("recipe_update/", recipe_update,name="recipe_update_form"),
-    path("recipe_details/<int:recipe_id>", get_recipe,name="recipe_detail"),
+    path("recipe_details/<int:recipe_id>/", get_recipe,name="recipe_detail"),
 ]

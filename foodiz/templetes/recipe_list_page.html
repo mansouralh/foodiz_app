@@ -1,0 +1,14 @@
+{%extends "base.html"%}
+{%block title %}my recipes{%endblock title%}
+
+
+{%block content%} 
+
+
+{% for recipe in recipes%}
+
+{{recipe.title}}
+
+<br>
+{%endfor%}
+{%endblock content%}
