@@ -1,9 +1,12 @@
 from django.shortcuts import redirect, render
-from rest_framework.generics import ListAPIView
 from foodiz.models import Recipe
 from .forms import RecipeForm
 
 # Create your views here.
+
+def get_home (request):
+    return render(request, 'home_page.html')
+
 
 def get_recipe(request,recipe_id):
     try:
@@ -19,7 +22,7 @@ def get_recipe(request,recipe_id):
             "time_to_prepare": str(recipe.time_to_prepare),
             "directions": recipe.directions,
                 #    "notes": recipe.notes,
-                #    "pic": recipe.pic 
+                   "pic": recipe.pic 
                    },
 }
     return render(request,"recipe_details_page.html", context)
@@ -38,7 +41,7 @@ def get_recipe_list(request):
 def create_recipe(request):
     form = RecipeForm()
     if request.method == "POST":
-        form = RecipeForm(request.POST)
+        form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("recipe_list")
@@ -53,19 +56,19 @@ def create_recipe(request):
 
 
 
-def recipe_update(request, Recipe_id):
-    recipe = RecipeForm.objects.get(id=Recipe_id)
-    form = RecipeForm(instance=recipe)
-    if request.method == "POST":
-        form = RecipeForm(request.POST, instance=recipe)
-        if form.is_valid():
-            form.save()
-            return redirect("recipe_list")
-    context = {
-        "recipe": recipe,
-        "form": form,
-    }
-    return render(request, 'recipe_update_page.html', context)
+# def recipe_update(request, Recipe_id):
+#     recipe = RecipeForm.objects.get(id=Recipe_id)
+#     form = RecipeForm(instance=recipe)
+#     if request.method == "POST":
+#         form = RecipeForm(request.POST, instance=recipe)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("recipe_list")
+#     context = {
+#         "recipe": recipe,
+#         "form": form,
+#     }
+#     return render(request, 'recipe_update_page.html', context)
 
 
 

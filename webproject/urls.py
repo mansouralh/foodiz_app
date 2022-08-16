@@ -13,15 +13,24 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from xml.dom.minidom import Document
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
-from foodiz.views import get_recipe,create_recipe,recipe_update,get_recipe_list
+from foodiz.views import get_recipe,create_recipe,get_recipe_list ,get_home
 
 
 urlpatterns = [
+    path ("", get_home, name="home"),
     path('admin/', admin.site.urls),
     path("Recipes/", get_recipe_list,name="recipe_list"),
     path("create_recipe/", create_recipe,name="recipe_form"),
-    path("recipe_update/", recipe_update,name="recipe_update_form"),
     path("recipe_details/<int:recipe_id>/", get_recipe,name="recipe_detail"),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
