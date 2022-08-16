@@ -5,107 +5,42 @@ from .forms import RecipeForm
 
 # Create your views here.
 
-
-
-class RecipeListView(ListAPIView):
-    queryset = Recipe.objects.all()
-    
-    
-    
-# class RecipeCreateView(CreateAPIView):
-#     serializer_class = CreateSerializer
-
-
-def home(request):
+def get_recipe(request,recipe_id):
+    try:
+        recipe =Recipe.objects.get(id=recipe_id)
+    except Recipe.DoesNotExist:
+        return redirect("list-page")
     context = {
-        "title": "Home",
-        "header": "Welcome to our site!",
-    }
-    return render(request, "home_page.html", context)
-    
-    
-    
-def detail_view(request):
+        "recipe": { "id": recipe.id,
+                   "title": recipe.title, 
+                   "describtion": recipe.describtion, 
+                   "serves": recipe.serves, 
+                   "time_to_prepare": recipe.time_to_prepare,
+                   "directions": recipe.directions,
+                   "notes": recipe.notes,
+                #    "pic": recipe.pic 
+                   },
+}
+    return render(request, 'recipe_details_page', context)
+
+
+
+def get_recipe_list(request):
+    recipe=Recipe.objects.all()
     context = {
-        "object": {
-            "key1": "value1",
-            "key2": "value2",
-            "key3": "value3",
-            "key4": "value4",
-        },
+        "recipe": recipe,
     }
-    return render(request, 'detail_page.html', context)
-
-
-def article_detail(request):
-    context = {
-        "article": {
-            "title": "Do or do not",
-            "content": "There is no try.",
-            "author": "Yoda",
-            "created_on": "2018-2-12",
-            "last_updated_on": "2018-2-14",
-        },
-    }
-    return render(request, "article_detail_page.html", context)
+    return render(request, 'recipe_list_page.html', context)
 
 
 
-
-def list_view(request):
-    context = {
-        "object_list": [
-            {
-                "key1": "value1",
-                "key2": "value2",
-            },
-            {
-                "key1": "value1",
-                "key2": "value2",
-            },
-            {
-                "key1": "value1",
-                "key2": "value2",
-            },
-        ],
-    }
-    return render(request, "list_page.html", context)
-
-
-def article_list(request):
-    context = {
-        "articles": [
-            {
-                "title": "Do or do not",
-                "author": "Yoda",
-            },
-            {
-                "title": "Youre my only hope",
-                "author": "Leia Organa",
-            },
-            {
-                "title": "I find your lack of faith disturbing.",
-                "author": "Darth Vader",
-            },
-        ],
-    }
-    return render(request, "article_list_page.html", context)
-
-
-
-
-
-
-
-
-
-def recipe_create_view(request):
+def create_recipe(request):
     form = RecipeForm()
     if request.method == "POST":
         form = RecipeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("list-view")
+            return redirect("recipe-list-view")
     context = {
         "form": form,
     }
@@ -113,8 +48,12 @@ def recipe_create_view(request):
 
 
 
-def recipe_update_view(request, obj_id):
-    obj = RecipeForm.objects.get(id=obj_id)
+   
+
+
+
+def recipe_update(request, Recipe_id):
+    obj = RecipeForm.objects.get(id=Recipe_id)
     form = RecipeForm(instance=obj)
     if request.method == "POST":
         form = RecipeForm(request.POST, instance=obj)
@@ -129,19 +68,6 @@ def recipe_update_view(request, obj_id):
 
 
 
-def recipe_delete_view(request, object_id):
-    Recipe.objects.get(id=object_id).delete()
-    return redirect("list-view")
     
-# def get_recipe(request):
-#     return render(request, 'recipe.html')
 
-# def get_ingredients(request):
-#     return render(request, 'ingredients.html')
-
-# def get_home(request):
-#     return render(request, 'home.html')
-
-# def get_user(request):
-#     return render(request, 'user.html')
 

@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from foodiz.views import get_recipe,create_recipe,recipe_update,get_recipe_list
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("Recipes/", get_recipe_list,name="recipe_list"),
+    path("create_recipe/", create_recipe,name="recipe_form"),
+    path("recipe_update/", recipe_update,name="recipe_update_form"),
+    path("recipe_details/<int:recipe_id>", get_recipe,name="recipe_detail"),
 ]
