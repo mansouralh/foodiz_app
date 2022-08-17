@@ -1,13 +1,62 @@
 from django.shortcuts import redirect, render
 from foodiz.models import Recipe
-from .forms import RecipeForm
-
+from .forms import LoginForm, RecipeForm,RegisterForm
+from django.contrib.auth import login, authenticate, logout
+from django.http import Http404
 # Create your views here.
 
 def get_home (request):
     return render(request, 'home_page.html')
 
+def some_view(request):
+    if not request.user.is_staff:
+        raise Http404
+    
+def some_view(request):
+    if request.user.is_anonymous:
+        return redirect("login")
 
+def register_user(request):
+    form = RegisterForm()
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user= form.save(commit=False)
+            user.set_password(user.password)
+            user.save()
+            login (request, user)
+            return redirect("home")
+    context = {
+        "form": form,
+    }
+    return render(request, 'register_page.html', context)
+
+
+def login_user(request):
+    form = LoginForm()
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            pass
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+            return redirect("recipe_list")
+    context = {
+        "form": form,
+    }
+    return render(request, 'login.html', context)
+    
+
+
+
+def logout_user(request):
+    logout(request)
+    return redirect("home")
+    
+    
 def get_recipe(request,recipe_id):
     try:
         recipe =Recipe.objects.get(id=recipe_id)

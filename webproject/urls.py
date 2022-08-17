@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from foodiz.views import get_recipe,create_recipe,get_recipe_list ,get_home
+from foodiz.views import get_recipe,create_recipe,get_recipe_list ,get_home,register_user,login_user
 
 
 urlpatterns = [
@@ -27,6 +27,8 @@ urlpatterns = [
     path("Recipes/", get_recipe_list,name="recipe_list"),
     path("create_recipe/", create_recipe,name="recipe_form"),
     path("recipe_details/<int:recipe_id>/", get_recipe,name="recipe_detail"),
+    path("register/", register_user,name="register"),
+    path("login_user/", login_user,name="login_user"),
 ]
 
 
