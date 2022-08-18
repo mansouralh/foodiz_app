@@ -8,13 +8,13 @@ from django.http import Http404
 def get_home (request):
     return render(request, 'home_page.html')
 
-def some_view(request):
-    if not request.user.is_staff:
-        raise Http404
+# def some_view(request):
+#     if not request.user.is_staff:
+#         raise Http404
     
-def some_view(request):
-    if request.user.is_anonymous:
-        return redirect("login")
+# def some_view(request):
+#     if request.user.is_anonymous:
+#         return redirect("login")
 
 def register_user(request):
     form = RegisterForm()
@@ -25,7 +25,7 @@ def register_user(request):
             user.set_password(user.password)
             user.save()
             login (request, user)
-            return redirect("home")
+            return redirect("recipe_list")
     context = {
         "form": form,
     }
@@ -66,6 +66,7 @@ def get_recipe(request,recipe_id):
         "recipe": { 
             "id": recipe_id,
             "title": recipe.title, 
+            "owner": recipe.owner.username,
             "describtion": recipe.describtion, 
             "serves": str(recipe.serves), 
             "time_to_prepare": str(recipe.time_to_prepare),

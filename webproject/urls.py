@@ -24,7 +24,7 @@ from foodiz.views import get_recipe,create_recipe,get_recipe_list ,get_home,regi
 urlpatterns = [
     path ("", get_home, name="home"),
     path('admin/', admin.site.urls),
-    path("Recipes/", get_recipe_list,name="recipe_list"),
+    path("rrecipes/", get_recipe_list,name="recipe_list"),
     path("create_recipe/", create_recipe,name="recipe_form"),
     path("recipe_details/<int:recipe_id>/", get_recipe,name="recipe_detail"),
     path("register/", register_user,name="register"),
