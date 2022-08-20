@@ -1,8 +1,9 @@
 from django.shortcuts import redirect, render
-from foodiz.models import Recipe
-from .forms import LoginForm, RecipeForm,RegisterForm
+from foodiz.models import Recipe,Ingredient
+
+from .forms import LoginForm, RecipeForm,RegisterForm,IngrediantForm
 from django.contrib.auth import login, authenticate, logout
-from django.http import Http404
+
 # Create your views here.
 
 def get_home (request):
@@ -70,12 +71,31 @@ def get_recipe(request,recipe_id):
             "describtion": recipe.describtion, 
             "serves": str(recipe.serves), 
             "time_to_prepare": str(recipe.time_to_prepare),
-            "directions": recipe.directions,
+            "instructions": recipe.instructions,
+            "ingredients_list": recipe.ingredients_list,
                 #    "notes": recipe.notes,
                    "pic": recipe.pic 
                    },
 }
     return render(request,"recipe_details_page.html", context)
+
+
+
+
+def get_ingredient(request,ingredient_id):
+    try:
+        ingredient =Ingredient.objects.get(id=ingredient_id)
+    except Ingredient.DoesNotExist:
+        return redirect("recipe_list")
+    context = {
+        "ingredient": { 
+            "id": ingredient_id,
+            "category": ingredient.category,
+            "owner": ingredient.owner.username,
+           "ingredient_name":ingredient.ingredient_name,
+                   },
+}
+    return render(request,"get_ingredient_page.html", context)
 
 
 
@@ -85,6 +105,23 @@ def get_recipe_list(request):
         "recipes": recipes
     }
     return render(request,'recipe_list_page.html', context)
+
+
+
+def get_recipe_list2(request):
+    recipes=Recipe.objects.all()
+    context = {
+        "recipes": recipes
+    }
+    return render(request,'all_recipes.html', context)
+
+
+def get_ingredient_list(request):
+    ingredients=Ingredient.objects.all()
+    context = {
+        "ingredients": ingredients
+    }
+    return render(request,'all_ingredient.html', context)
 
 
 
@@ -99,6 +136,22 @@ def create_recipe(request):
         "form": form,
     }
     return render(request, 'recipe_create_page.html', context)
+
+
+
+   
+
+def create_ingreadiant(request):
+    form = IngrediantForm()
+    if request.method == "POST":
+        form = IngrediantForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("recipe_list")
+    context = {
+        "form": form,
+    }
+    return render(request, 'ingrediant_create_page.html', context)
 
 
 

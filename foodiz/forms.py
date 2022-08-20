@@ -1,7 +1,7 @@
 
 from tkinter import Widget
 from django import forms
-from .models import Recipe,Measured_Ingredients
+from .models import Recipe,Ingredient
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -23,10 +23,10 @@ class LoginForm(forms.Form):
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        fields = ['title', 'describtion', 'serves', 'time_to_prepare', 'directions', 'notes', 'pic']
+        fields = ['title', 'owner','describtion', 'serves', 'time_to_prepare','ingredients_list', 'instructions', 'notes', 'pic']
         
 class IngrediantForm(forms.ModelForm):
     class Meta:
-        model = Measured_Ingredients
-        fields = [ 'quantity', 'unit', ]
+        model = Ingredient
+        fields = [ 'ingredient_name','category', 'owner', ]
         

@@ -1,13 +1,15 @@
-{%extends 'base.html' %}
+{%extends 'base2.html' %}
 {% load crispy_forms_tags%}
 {%block title %} create {%endblock title %}
 
 
 <!-- block -->
 {%block content %}
-<form action="{%url 'register' %}" method="POST" enctype="multipart/form-data">
+<div class="container">
+<form action="{%url 'recipe_form' %}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}{{form | crispy}}
 
-<input type="submit" value="create recipe"/>
+<input type="submit" class="btn btn-success btn-lg btn-block" style=" width:100%" value="Create Recipe"/>
 </form>
+</div>
 {%endblock content%}

@@ -1,0 +1,15 @@
+{%extends 'base2.html' %}
+{% load crispy_forms_tags%}
+{%block title %} Create Ingreadiant{%endblock title %}
+
+
+<!-- block -->
+{%block content %}
+<div class="container">
+<form action="{%url 'create_ingreadiant' %}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}{{form | crispy}}
+
+<input type="submit" class="btn btn-success btn-lg btn-block" style=" width:100%" value="Create Ingreadiant"/>
+</form>
+</div>
+{%endblock content%}

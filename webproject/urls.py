@@ -18,17 +18,22 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from foodiz.views import get_recipe,create_recipe,get_recipe_list ,get_home,register_user,login_user
+from foodiz.views import get_recipe,create_recipe,get_recipe_list ,get_home,register_user,login_user,get_ingredient,get_recipe_list2,get_ingredient_list,create_ingreadiant,logout_user
 
 
 urlpatterns = [
     path ("", get_home, name="home"),
     path('admin/', admin.site.urls),
-    path("rrecipes/", get_recipe_list,name="recipe_list"),
+    path("recipes/", get_recipe_list,name="recipe_list"),
+    path("recipes2/", get_recipe_list2,name="recipe_lists2"),
     path("create_recipe/", create_recipe,name="recipe_form"),
+    path("create_ingreadiant/", create_ingreadiant,name="create_ingreadiant"),
     path("recipe_details/<int:recipe_id>/", get_recipe,name="recipe_detail"),
     path("register/", register_user,name="register"),
     path("login_user/", login_user,name="login_user"),
+    path("get_ingredient/", get_ingredient,name="get_ingredient"),
+    path("ingredient_list/", get_ingredient_list,name="ingredient_list"),
+    path("logout_user/", logout_user,name="logout_user"),
 ]
 
 
